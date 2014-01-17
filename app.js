@@ -16,12 +16,25 @@ var animateSlider = function(direction, duration){
 	}
 };
 
+var isAtStart = function(){
+	return parseInt(sliderList.css("margin-left"), 10) === 0;
+}
+var isAtEnd = function() {
+	var imageWidth = sliderItems.first().width();
+	var imageCount = sliderItems.lenght;
+	var maxMargin = -1 * (imageWidth * (imageCount-1));
+	return	parseInt(sliderList.css("margin-left"), 10) === maxMargin;
+}
 buttons.on("click", function(){
-	if($(this).hasClass("back")){
-		animateSlider("+", 1000);
-	} else {
-		animateSlider("-", 1000);
+	var $this = $(this);
+	var isBackBtn = $this.hasClass("back");
+	if(isBackBtn && isAtStart()) {
+		return;
 	}
+	if(!isBackBtn && isAtEnd()){
+		return;
+	}
+	animateSlider((isBackBtn ? "+" : "-"), 1000);
 });
 
 });
